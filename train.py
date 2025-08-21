@@ -1,3 +1,12 @@
+##### checklist before you start #####
+# 1. download your base model in the base_model folder
+# 2. set your dataset and extract features (frozen) in the features folder
+# 3. divide your dataset into train/test sets in dataset_division.json
+# 4. make multifold division csv files in the multifold folder
+# 5. modify params.py and this file
+# 6. run this file
+##### -------------------------- #####
+
 import os
 import sys
 import logging
@@ -5,13 +14,13 @@ import torch
 import random
 import numpy as np
 import params
-# from main_wsi_subtyping_CONCH import main_subtyping
-# from main_wsi_subtyping import main_subtyping
-from main.main_wsi_subtyping_MUSK import main_subtyping
+from subtyping.main_wsi_subtyping_KEEP import main_subtyping # change your base model here
 import evaluation
 from pathlib import Path
 
-proc_tumor = 'ebrains'
+os.environ['CUDA_LAUNCH_BLOCKING'] = '1'
+
+proc_tumor = 'ucs' # your few-shot dataset
 
 ### set seed ###
 SEED = 42
@@ -36,18 +45,16 @@ if __name__ == "__main__":
 
     save_path = './logs/' + log_name + ".log"
     log_file = Path(save_path)
-    log_file.parent.mkdir(parents=True, exist_ok=True)  # 创建所有父目录
-    log_file.touch(exist_ok=True)  
+    log_file.parent.mkdir(parents=True, exist_ok=True)
+    log_file.touch(exist_ok=True)
 
     logging.basicConfig(
         level=logging.INFO,
         format="%(asctime)s - %(levelname)s - %(message)s",
         handlers=[
-            logging.FileHandler(save_path),             # 输出到文件
-            logging.StreamHandler(sys.stdout)              # 输出到终端
+            logging.FileHandler(save_path),
+            logging.StreamHandler(sys.stdout)
         ],
-        # filename=log_name + ".log",  # 日志文件路径
-        # filemode="a"  # 文件模式：'w' 覆盖，'a' 追加
     )
     logging.info('******************** new start *******************')
     

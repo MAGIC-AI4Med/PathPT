@@ -16,15 +16,15 @@ class FeatureTransform:
                  verify_input=True
                  ):
         """
-        L2归一化特征的数据增强Transform
+        Data augmentation Transform for L2-normalized features
         
         Args:
-            noise_level: 高斯噪声的标准差
-            dropout_rate: 随机特征丢弃的比例
-            mixup_prob: 使用mixup增强的概率
-            rotation_prob: 使用随机旋转的概率
-            p: 应用任何增强的总体概率
-            verify_input: 是否验证输入特征是L2归一化的
+            noise_level: Standard deviation of Gaussian noise
+            dropout_rate: Proportion of random feature dropout
+            mixup_prob: Probability of using mixup augmentation
+            rotation_prob: Probability of using random rotation
+            p: Overall probability of applying any augmentation
+            verify_input: Whether to verify that input features are L2-normalized
         """
         self.noise_level = noise_level
         self.mixup_prob = mixup_prob
@@ -35,7 +35,7 @@ class FeatureTransform:
         self.verify_input = verify_input
     
     def _verify_l2_norm(self, x):
-        """验证输入是否已L2归一化"""
+        """Verify if input is L2-normalized"""
         if isinstance(x, np.ndarray):
             norm = np.linalg.norm(x, axis=-1)
             return np.allclose(norm, 1.0, rtol=1e-5, atol=1e-5)
@@ -45,7 +45,7 @@ class FeatureTransform:
         return False
         
     def _l2_normalize(self, x):
-        """对输入进行L2归一化"""
+        """Apply L2 normalization to input"""
         if isinstance(x, np.ndarray):
             return normalize(x, norm='l2', axis=-1)
         elif isinstance(x, torch.Tensor):
@@ -53,7 +53,7 @@ class FeatureTransform:
         return x
     
     def add_noise(self, x):
-        """添加高斯噪声"""
+        """Add Gaussian noise"""
         if isinstance(x, np.ndarray):
             noise = np.random.normal(0, self.noise_level, x.shape)
             return self._l2_normalize(x + noise)
@@ -64,97 +64,97 @@ class FeatureTransform:
     
     def random_rotation_blocks(self, x, max_angle=np.pi/4):
         """
-        使用对角块旋转矩阵应用有限角度的随机旋转
+        Apply limited-angle random rotation using diagonal block rotation matrices
         
-        参数:
-            x: 输入特征
-            max_angle: 最大旋转角度（弧度），默认为π/4（45度）
+        Args:
+            x: Input features
+            max_angle: Maximum rotation angle (radians), default π/4 (45 degrees)
         """
         if isinstance(x, np.ndarray):
             dim = x.shape[-1]
             rotation = np.eye(dim)
             
-            # 创建一系列2×2旋转块
+            # Create a series of 2×2 rotation blocks
             for i in range(0, dim-1, 2):
-                # 确保我们有足够的维度来旋转
+                # Ensure we have enough dimensions to rotate
                 if i+1 >= dim:
                     break
                     
-                # 生成有限范围内的随机角度
-                # 可以是[-max_angle, max_angle]或[0, max_angle]
+                # Generate random angle within limited range
+                # Can be [-max_angle, max_angle] or [0, max_angle]
                 theta = np.random.uniform(-max_angle, max_angle)
                 cos_t = np.cos(theta)
                 sin_t = np.sin(theta)
                 
-                # 创建2×2旋转矩阵
+                # Create 2×2 rotation matrix
                 rot_block = np.array([
                     [cos_t, -sin_t],
                     [sin_t, cos_t]
                 ])
                 
-                # 将旋转矩阵填入对角块
+                # Fill rotation matrix into diagonal block
                 rotation[i:i+2, i:i+2] = rot_block
             
-            # 应用旋转
+            # Apply rotation
             return np.dot(x, rotation)
         
         elif isinstance(x, torch.Tensor):
             dim = x.shape[-1]
             rotation = torch.eye(dim, device=x.device)
             
-            # 创建一系列2×2旋转块
+            # Create a series of 2×2 rotation blocks
             for i in range(0, dim-1, 2):
-                # 确保我们有足够的维度来旋转
+                # Ensure we have enough dimensions to rotate
                 if i+1 >= dim:
                     break
                     
-                # 生成有限范围内的随机角度
+                # Generate random angle within limited range
                 theta = torch.rand(1, device=x.device) * 2 * max_angle - max_angle
                 cos_t = torch.cos(theta)
                 sin_t = torch.sin(theta)
                 
-                # 创建2×2旋转矩阵
+                # Create 2×2 rotation matrix
                 rot_block = torch.tensor([
                     [cos_t, -sin_t],
                     [sin_t, cos_t]
                 ], device=x.device).squeeze()
                 
-                # 将旋转矩阵填入对角块
+                # Fill rotation matrix into diagonal block
                 rotation[i:i+2, i:i+2] = rot_block
             
-            # 应用旋转
+            # Apply rotation
             return torch.matmul(x, rotation)
         
         return x
     
     def feature_mixup(self, feature1, feature2, label1, label2, alpha=0.2, l2_normalize=True):
         """
-        对两个特征和标签执行mixup
+        Perform mixup on two features and labels
         
         Args:
-            feature1: 第一个特征
-            feature2: 第二个特征
-            label1: 第一个标签，可选
-            label2: 第二个标签，可选
-            alpha: mixup参数，用于beta分布
-            l2_normalize: 是否对混合后的特征执行L2归一化
+            feature1: First feature
+            feature2: Second feature
+            label1: First label, optional
+            label2: Second label, optional
+            alpha: Mixup parameter for beta distribution
+            l2_normalize: Whether to apply L2 normalization to mixed features
             
         Returns:
-            混合后的特征和标签（如果提供了标签）
+            Mixed features and labels (if labels are provided)
         """
-        # 生成mixup系数
+        # Generate mixup coefficient
         lam = np.random.beta(alpha, alpha)
         
-        # 混合特征
+        # Mix features
         if isinstance(feature1, np.ndarray):
             mixed_feature = lam * feature1 + (1 - lam) * feature2
-            # L2归一化
+            # L2 normalization
             if l2_normalize:
                 mixed_feature = normalize(mixed_feature, norm='l2', axis=-1)
         elif isinstance(feature1, torch.Tensor):
             lam_tensor = torch.tensor(lam, device=feature1.device).float()
             mixed_feature = lam_tensor * feature1 + (1 - lam_tensor) * feature2
-            # L2归一化
+            # L2 normalization
             if l2_normalize:
                 mixed_feature = F.normalize(mixed_feature, p=2, dim=-1)
         
@@ -169,15 +169,15 @@ class FeatureTransform:
     
     def __call__(self, x, x2, label, label2):
         """
-        应用特征增强变换
+        Apply feature augmentation transforms
         
         Args:
-            x: 输入特征，预期已经L2归一化，可以是numpy数组或PyTorch张量
+            x: Input features, expected to be L2-normalized, can be numpy array or PyTorch tensor
             
         Returns:
-            增强后的特征，保持L2归一化
+            Augmented features, maintaining L2 normalization
         """
-        # 验证输入是否已L2归一化  
+        # Verify if input is L2-normalized
         label = torch.tensor(label)
         label2 = torch.tensor(label2)
         
@@ -185,24 +185,24 @@ class FeatureTransform:
             x = self._l2_normalize(x)
         
         one_hot = F.one_hot(label, self.num_classes).float()
-        # 应用平滑
+        # Apply smoothing
         smoothed_label = one_hot * (1 - self.smoothing) + self.smoothing / self.num_classes
         
-        # 以概率p决定是否应用任何增强
+        # Decide whether to apply any augmentation with probability p
         if np.random.random() > self.p:
             return x, smoothed_label
             
-        # 决定应用哪种增强方法
+        # Decide which augmentation method to apply
         r = np.random.random()
         
-        if r < 0.5:
-            # 添加噪声
+        if r < 0.33:
+            # Add noise
             return self.add_noise(x), smoothed_label
         # elif r < 0.66 and self.rotation_prob > 0:
-        #     # 随机旋转
+        #     # Random rotation
         #     return self.random_rotation_blocks(x), smoothed_label
         elif self.mixup_prob > 0:
-            # Mixup (注意：这需要一对特征才能工作)
+            # Mixup (Note: this requires a pair of features to work)
             return self.feature_mixup(x, x2, label, label2)
         
         return x, smoothed_label

@@ -173,50 +173,6 @@ ebrains_names = {'Glioblastoma__IDH-wildtype': ['glioblastoma, IDH-wildtype', 'g
         
 }
 
-sarc_names = {'Dedifferentiated liposarcoma':['dedifferentiated liposarcoma',
-                                                   'dedifferentiated liposarcoma of soft tissue',
-                                                   'liposarcoma, dedifferentiated'],
-                   'Leiomyosarcoma (LMS)':['leiomyosarcoma',
-                                           'leiomyosarcoma, malignant'],
-                   'Malignant Peripheral Nerve Sheath Tumors (MPNST)':['malignant peripheral nerve sheath tumor', 
-                                                                       'malignant neurilemmoma', 
-                                                                       'neurofibrosarcoma, malignant'],
-                   'Myxofibrosarcoma':['myxofibrosarcoma',
-                                       'fibromyxosarcoma',
-                                       'fibromyxoid sarcoma'],
-                   'Undifferentiated Pleomorphic Sarcoma':['undifferentiated pleomorphic sarcoma',
-                                                           'undifferentiated pleomorphic soft tissue sarcoma'],
-                   'Normal':['normal soft tissue',
-                              'non-cancerous soft tissue']
-}
-
-thym_names = {'Thymoma, Type A':['thymoma, spindle cell',
-                                 'thymoma, type A',
-                                      ],
-                   'Thymoma, Type AB':['thymoma, mixed type',
-                                       'thymoma, type AB'
-                                       ],
-                   'Thymoma, Type B1':['thymoma, lymphocyte-rich', 
-                                       'thymoma, lymphocytic',
-                                       'thymoma, type B1'
-                                       ],
-                   'Thymoma, Type B2':['thymoma, cortical',
-                                       'thymoma, type B2'
-                                       ],
-                   'Normal':['normal thymus tissue',
-                             'thymus normal tissue',
-                              'non-cancerous thymus tissue']
-}
-
-ucs_names = {'Uterine Carcinosarcoma-MMMT-Heterologous Type': ['uterine Carcinosarcoma, heterologous type', 
-                                                                      'malignant mixed müllerian tumor, heterologous type'],
-    'Uterine Carcinosarcoma-MMMT-Homologous Type': ['uterine carcinosarcoma, homologous type', 
-                                                     'malignant mixed müllerian tumor, heterologous type'],
-                   'Normal':['normal uterus tissue',
-                             'thymux uterus tissue',
-                              'non-cancerous uterus tissue']
-}
-
 shenmu_names = {'Ganglioneuroblastoma, nodular(and other composite neuroblastic tumours)':['Ganglioneuroblastoma, nodular',
                                                                                            'nodular ganglioneuroblastoma'],
                 'Ganglioneuroblastoma, intermixed': ['ganglioneuroblastoma, intermixed',
@@ -289,6 +245,52 @@ shenzangmu_names = {'Nephroblastoma, blastemal type': ['nephroblastoma, blastema
                         ],
                 }
 
+
+sarc_names = {'Dedifferentiated liposarcoma':['dedifferentiated liposarcoma',
+                                                   'dedifferentiated liposarcoma of soft tissue',
+                                                   'liposarcoma, dedifferentiated'],
+                   'Leiomyosarcoma (LMS)':['leiomyosarcoma',
+                                           'leiomyosarcoma, malignant'],
+                   'Malignant Peripheral Nerve Sheath Tumors (MPNST)':['malignant peripheral nerve sheath tumor', 
+                                                                       'malignant neurilemmoma', 
+                                                                       'neurofibrosarcoma, malignant'],
+                   'Myxofibrosarcoma':['myxofibrosarcoma',
+                                       'fibromyxosarcoma',
+                                       'fibromyxoid sarcoma'],
+                   'Undifferentiated Pleomorphic Sarcoma':['undifferentiated pleomorphic sarcoma',
+                                                           'undifferentiated pleomorphic soft tissue sarcoma'],
+                   'Normal':['normal soft tissue',
+                              'non-cancerous soft tissue']
+}
+
+thym_names = {'Thymoma, Type A':['thymoma, spindle cell',
+                                 'thymoma, type A',
+                                      ],
+                   'Thymoma, Type AB':['thymoma, mixed type',
+                                       'thymoma, type AB'
+                                       ],
+                   'Thymoma, Type B1':['thymoma, lymphocyte-rich', 
+                                       'thymoma, lymphocytic',
+                                       'thymoma, type B1'
+                                       ],
+                   'Thymoma, Type B2':['thymoma, cortical',
+                                       'thymoma, type B2'
+                                       ],
+                   'Normal':['normal thymus tissue',
+                             'thymus normal tissue',
+                              'non-cancerous thymus tissue']
+}
+
+ucs_names = {'Uterine Carcinosarcoma-MMMT-Heterologous Type': ['uterine Carcinosarcoma, heterologous type', 
+                                                                      'malignant mixed müllerian tumor, heterologous type'],
+    'Uterine Carcinosarcoma-MMMT-Homologous Type': ['uterine carcinosarcoma, homologous type', 
+                                                     'malignant mixed müllerian tumor, heterologous type'],
+                   'Normal':['normal uterus tissue',
+                             'thymux uterus tissue',
+                              'non-cancerous uterus tissue']
+}
+
+
 def read_h5(path):
     with h5py.File(path, 'r') as f:
         coords = f['coords'][:]
@@ -325,9 +327,8 @@ def load_prompts(dataset_name, subtype_names):
         
     return prompt_list,classname_list
     
-    
 
-def load_prompts_from_template(json_path, classnames_example=None):#这里的example是有normal的，是从csv（testset）得到的diagnosis result
+def load_prompts_from_template(json_path, classnames_example=None): # example with normal
     with open(json_path, 'r') as file:
         data = json.load(file)
 

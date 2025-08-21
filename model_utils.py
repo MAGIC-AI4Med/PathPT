@@ -53,21 +53,18 @@ class MultiKernelConv1DTrans(nn.Module):
         
         # self.final_conv = nn.Conv1d(in_channels, out_channels, kernel_size=1)
         
+        self.cls_token = nn.Parameter(torch.randn(1, 1, out_channels))
         self.translayer = TransLayer(dim=out_channels)
         
-        # self.head = nn.Sequential(
-        #             nn.Linear(in_channels, in_channels),
-        #             nn.ReLU(),
-        #             nn.Linear(in_channels, cls_num)
-        #         )
+        # self.head = nn.Linear(out_channels, cls_num)
     
     def forward(self, x):
-        # 原始输入（用于残差连接）
+        # Original input (for residual connection)
         if len(x.shape)== 2:
             x = x.unsqueeze(0)
         input = x.permute(0, 2, 1)
         
-        # 多核卷积处理
+        # Multi-kernel convolution processing
         output1 = self.conv1(input)
         output1 = self.active(self.norm(output1.permute(0, 2, 1)))
         output2 = self.conv2(input)
@@ -76,7 +73,7 @@ class MultiKernelConv1DTrans(nn.Module):
         output3 = self.active(self.norm(output3.permute(0, 2, 1)))
         output = output1 + output2 + output3 + x
         
-                # 残差卷积
+                # Residual convolution
                 # output = self.final_conv(output) + output
                 # output = self.active(self.norm(output.permute(0, 2, 1)))
         
@@ -84,17 +81,88 @@ class MultiKernelConv1DTrans(nn.Module):
         output = self.translayer(output)
         output = self.norm(output)
        
-        # 全连接层
+        # Fully connected layer
         # output = self.head(output)
         return output
+    
+class MultiKernelConv1DTransCLS(nn.Module):
+    def __init__(
+        self,
+        in_channels=768,
+        out_channels=768,
+        cls_num = None,
+    ):
+        super().__init__()
+        self.conv1 = nn.Conv1d(
+                    in_channels=in_channels,
+                    out_channels=out_channels,
+                    kernel_size=3,
+                    padding=1,
+                )
+        self.conv2 = nn.Conv1d(
+                    in_channels=in_channels,
+                    out_channels=out_channels,
+                    kernel_size=5,
+                    padding=2,
+                )
+        self.conv3 = nn.Conv1d(
+                    in_channels=in_channels,
+                    out_channels=out_channels,
+                    kernel_size=7,
+                    padding=3,
+                )
+        self.norm = nn.LayerNorm(out_channels)
+        self.active = nn.ReLU()
+        
+        # self.final_conv = nn.Conv1d(in_channels, out_channels, kernel_size=1)
+        
+        self.cls_token = nn.Parameter(torch.randn(1, 1, out_channels))
+        self.translayer = TransLayer(dim=out_channels)
+        
+        self.head = nn.Linear(out_channels, cls_num)
+    
+    def forward(self, x):
+        # Original input (for residual connection)
+        if len(x.shape)== 2:
+            x = x.unsqueeze(0)
+        input = x.permute(0, 2, 1)
+        
+        # Multi-kernel convolution processing
+        output1 = self.conv1(input)
+        output1 = self.active(self.norm(output1.permute(0, 2, 1)))
+        output2 = self.conv2(input)
+        output2 = self.active(self.norm(output2.permute(0, 2, 1)))
+        output3 = self.conv3(input)
+        output3 = self.active(self.norm(output3.permute(0, 2, 1)))
+        output = output1 + output2 + output3 + x
+        
+                # Residual convolution
+                # output = self.final_conv(output) + output
+                # output = self.active(self.norm(output.permute(0, 2, 1)))
+        
+        ## 
+        B = output.shape[0]
+        cls_tokens = self.cls_token.expand(B, -1, -1).to(output.device)
+        output = torch.cat((cls_tokens, output), dim=1)
+        
+        ## trans-layer
+        output = self.translayer(output)
+        output = self.norm(output)
+        
+        output_cls = self.head(output[:,0])
+        output_feats = output[:,1:]
+       
+        # Fully connected layer
+        # output = self.head(output)
+        return output_cls, output_feats
 
 class AttentionAgg(nn.Module):
     def __init__(self, dim=768, cls_num = 3):
         super().__init__()
         
         self.attn = nn.Sequential(
-            nn.Linear(dim, 1),  # 为每个patch生成重要性分数
-            nn.Softmax(dim=0)   # 在patch维度归一化
+            nn.Linear(dim, 1),  # Generate importance score for each patch
+            nn.Softmax(dim=0)   # Normalize in the patch dimension
         )
         self.head = nn.Sequential(
                     nn.Linear(dim, dim),
@@ -137,8 +205,8 @@ class ConvAttentionAgg(nn.Module):
         self.active = nn.ReLU()
         
         self.attn = nn.Sequential(
-            nn.Linear(dim, 1),  # 为每个patch生成重要性分数
-            nn.Softmax(dim=0)   # 在patch维度归一化
+            nn.Linear(dim, 1),  # Generate importance score for each patch
+            nn.Softmax(dim=0)   # Normalize in the patch dimension
         )
         self.head = nn.Sequential(
                     nn.Linear(dim, dim),
@@ -152,7 +220,7 @@ class ConvAttentionAgg(nn.Module):
             x = x.unsqueeze(0)
         input = x.permute(0, 2, 1)
         
-        # 多核卷积处理
+        # Multi-kernel convolution processing
         output1 = self.conv1(input)
         output1 = self.active(self.norm(output1.permute(0, 2, 1)))
         output2 = self.conv2(input)
@@ -198,8 +266,8 @@ class ConvTransAttentionAgg(nn.Module):
         self.translayer = TransLayer(dim=dim)
         
         self.attn = nn.Sequential(
-            nn.Linear(dim, 1),  # 为每个patch生成重要性分数
-            nn.Softmax(dim=0)   # 在patch维度归一化
+            nn.Linear(dim, 1),  # Generate importance score for each patch
+            nn.Softmax(dim=0)   # Normalize in the patch dimension
         )
         self.head = nn.Sequential(
                     nn.Linear(dim, dim),
@@ -213,7 +281,7 @@ class ConvTransAttentionAgg(nn.Module):
             x = x.unsqueeze(0)
         input = x.permute(0, 2, 1)
         
-        # 多核卷积处理
+        # Multi-kernel convolution processing
         output1 = self.conv1(input)
         output1 = self.active(self.norm(output1.permute(0, 2, 1)))
         output2 = self.conv2(input)
