@@ -12,11 +12,11 @@ class PromptLearnerConfig():
         self.token_embedding_size = 768
         self.patch_embedding_size = 1024
 
-CONCH_PATH = "YOUR PATH TO CONCH MODEL/pytorch_model.bin"
-MUSK_PATH = 'YOUR PATH TO MUSK MODEL/MUSK'
-KEEP_PATH = 'YOUR PATH TO KEEP MODEL/keep'
-PLIP_PATH = 'YOUR PATH TO PLIP MODEL/plip'
-SAVE_DIR = "YOUR PATH TO SAVE FEW-SHOT RESULTS/"
+CONCH_PATH = "./base_models/conch/pytorch_model.bin" # YOUR PATH TO CONCH MODEL
+MUSK_PATH = './base_models/MUSK' # YOUR PATH TO MUSK MODEL
+KEEP_PATH = './base_models/keep' # YOUR PATH TO KEEP MODEL
+PLIP_PATH = './base_models/plip' # YOUR PATH TO PLIP MODEL
+SAVE_DIR = "./fewshot_results/"
 
 # dataset division, classnames & labels
 # check this file before you start!!!
@@ -28,7 +28,7 @@ subtype_params = {
         "source":'TCGA',
         'dataset_name':'UCS',
         'dataset_path':'multifold/dataset_csv_10shot/TCGA/UCS/', # where you place your multifold division csvs
-        "keep_feature_root" : "YOUR PATH TO KEEP FEATURE DIR/h5_files", # h5 format
+        "keep_feature_root" : "features/keep/ucs/h5_files", # h5 format
         "plip_feature_root" : "YOUR PATH TO PLIP FEATURE DIR/h5_files", # h5 format
         "conch_feature_root" : "YOUR PATH TO CONCH FEATURE DIR/h5_files", # h5 format
         # musk is excluded because it was pretrained on TCGA
