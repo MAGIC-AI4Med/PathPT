@@ -1,6 +1,7 @@
 # PathPT (Pathology Prompt-Tuning)
 The official code for **"Boosting Pathology Foundation Models via Few-shot Prompt-tuning for Rare Cancer Subtyping"**
 
+[Preprint]() | [Cite](#reference)
 
 ---
 
@@ -16,3 +17,10 @@ To address this limitation, we propose **PathPT**, a novel framework that aims t
 1. Download base model KEEP from [KEEP](https://huggingface.co/Astaxanthin/KEEP) and place the model folder into ./base_models
 2. Download feature of TCGA-UCS extracted using KEEP at [UCS-KEEP-feature](https://drive.google.com/file/d/1RNSIINkumfhiyqwL82hUXALCtdyPhbC3/view?usp=sharing) and place the unziped folder into ./features/keep/ucs/h5_files
 3. Run train.py
+
+
+## Acknowledgment
+
+
+## Reference
+
