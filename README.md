@@ -13,14 +13,13 @@ To address this limitation, we propose **PathPT**, a novel framework that aims t
 
 
 ## Quick Start
-
 1. Download base model KEEP from [KEEP](https://huggingface.co/Astaxanthin/KEEP) and place the model folder into ./base_models
 2. Download feature of TCGA-UCS extracted using KEEP at [UCS-KEEP-feature](https://drive.google.com/file/d/1RNSIINkumfhiyqwL82hUXALCtdyPhbC3/view?usp=sharing) and place the unziped folder into ./features/keep/ucs/h5_files
 3. Run train.py
 
 
 ## Acknowledgment
-
+The project was built on top of repositories such as [CLAM](https://github.com/mahmoodlab/CLAM), [CoOp](https://github.com/KaiyangZhou/CoOp) and [TransMIL](https://github.com/szc19990412/TransMIL). We thank the authors and developers for their contribution.
 
 ## Reference
-
+If you find our work useful in your research, please consider citing our [paper]():
