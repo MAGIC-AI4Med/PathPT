@@ -23,3 +23,9 @@ The project was built on top of repositories such as [CLAM](https://github.com/m
 
 ## Reference
 If you find our work useful in your research, please consider citing our [paper]():
+
+
+
+
+
+<img src=resources/logo.png> 
