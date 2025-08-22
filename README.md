@@ -23,6 +23,11 @@ pip install -r requirements.txt
 ```
 4. Run train.py
 
+## Customizing
+
+
+## Benchmark
+
 
 ## Acknowledgment
 The project was built on top of repositories such as [CLAM](https://github.com/mahmoodlab/CLAM), [CoOp](https://github.com/KaiyangZhou/CoOp) and [TransMIL](https://github.com/szc19990412/TransMIL). We thank the authors and developers for their contribution.
