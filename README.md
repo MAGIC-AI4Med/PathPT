@@ -22,6 +22,8 @@ To address this limitation, we propose **PathPT**, a novel framework that aims t
 
 **🔹 Fine-grained Interpretable Grounding**: By leveraging foundation models' zero-shot capabilities, PathPT converts WSI-level supervision into fine-grained tile-level guidance, achieving superior localization on cancerous regions with enhanced interpretability compared to traditional approaches.
 
+<img src="resources/visualization.png" alt="workflow" width="800" />
+
 
 ## Quick Start
 1. Download base model KEEP from [KEEP](https://huggingface.co/Astaxanthin/KEEP) and place the model folder into ./base_models
