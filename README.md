@@ -40,6 +40,8 @@ pip install -r requirements.txt
 
 
 ## Benchmark
+We benchmarked 4 MILs and PathPT on 11 datasets, covering rare adult cancer, rare pediatric cancer and common cancer, based on foundation model PLIP, MUSK, CONCH and KEEP. Results demonstrates PathPT’s superior performance over traditional MIL frameworks. Noted that MUSK was excluded from TCGA-benchmarks because it was pretrained on TCGA. Detailed results and analysis can be found in our [paper]().
+<img src="resources/benchmark.png" alt="workflow" width="800" />
 
 
 ## Acknowledgment
