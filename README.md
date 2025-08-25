@@ -50,6 +50,17 @@ The project was built on top of repositories such as [CLAM](https://github.com/m
 ## Reference
 If you find our work useful in your research, please consider citing our [paper](https://arxiv.org/abs/2508.15904):
 
+```
+@misc{he2025boostingpathologyfoundationmodels,
+      title={Boosting Pathology Foundation Models via Few-shot Prompt-tuning for Rare Cancer Subtyping}, 
+      author={Dexuan He and Xiao Zhou and Wenbin Guan and Liyuan Zhang and Xiaoman Zhang and Sinuo Xu and Ge Wang and Lifeng Wang and Xiaojun Yuan and Xin Sun and Yanfeng Wang and Kun Sun and Ya Zhang and Weidi Xie},
+      year={2025},
+      eprint={2508.15904},
+      archivePrefix={arXiv},
+      primaryClass={cs.CV},
+      url={https://arxiv.org/abs/2508.15904}, 
+}
+```
 
 
 
