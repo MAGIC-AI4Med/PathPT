@@ -42,8 +42,11 @@ Want to use your custom pathology datasets or other foundation models? Coming so
 
 ## Benchmark
 We benchmarked 4 MILs and PathPT on 11 datasets, covering rare adult cancer, rare pediatric cancer and common cancer, based on foundation model PLIP, MUSK, CONCH and KEEP.
+
 <img src="resources/benchmark.png" alt="workflow" width="800" />
+
 Results demonstrates PathPT’s superior performance over traditional MIL frameworks. Noted that MUSK was excluded from TCGA-benchmarks because it was pretrained on TCGA.
+
 Detailed results and analysis can be found in our [paper](https://arxiv.org/abs/2508.15904).
 
 
