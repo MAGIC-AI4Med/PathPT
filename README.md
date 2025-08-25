@@ -37,6 +37,7 @@ pip install -r requirements.txt
 4. Run train.py
 
 ## Customizing
+Want to use your custom pathology datasets or other foundation models? Coming soon.
 
 
 ## Benchmark
