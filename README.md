@@ -1,7 +1,7 @@
 # PathPT (Pathology Prompt-Tuning)
 The official code for **"Boosting Pathology Foundation Models via Few-shot Prompt-tuning for Rare Cancer Subtyping"**
 
-[Preprint]() | [Cite](#reference)
+[Preprint](https://arxiv.org/abs/2508.15904) | [Cite](#reference)
 
 ---
 
@@ -40,7 +40,7 @@ pip install -r requirements.txt
 
 
 ## Benchmark
-We benchmarked 4 MILs and PathPT on 11 datasets, covering rare adult cancer, rare pediatric cancer and common cancer, based on foundation model PLIP, MUSK, CONCH and KEEP. Results demonstrates PathPT’s superior performance over traditional MIL frameworks. Noted that MUSK was excluded from TCGA-benchmarks because it was pretrained on TCGA. Detailed results and analysis can be found in our [paper]().
+We benchmarked 4 MILs and PathPT on 11 datasets, covering rare adult cancer, rare pediatric cancer and common cancer, based on foundation model PLIP, MUSK, CONCH and KEEP. Results demonstrates PathPT’s superior performance over traditional MIL frameworks. Noted that MUSK was excluded from TCGA-benchmarks because it was pretrained on TCGA. Detailed results and analysis can be found in our [paper](https://arxiv.org/abs/2508.15904).
 <img src="resources/benchmark.png" alt="workflow" width="800" />
 
 
@@ -48,7 +48,7 @@ We benchmarked 4 MILs and PathPT on 11 datasets, covering rare adult cancer, rar
 The project was built on top of repositories such as [CLAM](https://github.com/mahmoodlab/CLAM), [CoOp](https://github.com/KaiyangZhou/CoOp) and [TransMIL](https://github.com/szc19990412/TransMIL). We thank the authors and developers for their contribution.
 
 ## Reference
-If you find our work useful in your research, please consider citing our [paper]():
+If you find our work useful in your research, please consider citing our [paper](https://arxiv.org/abs/2508.15904):
 
 
 
