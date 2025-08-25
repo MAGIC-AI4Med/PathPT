@@ -26,15 +26,16 @@ To address this limitation, we propose **PathPT**, a novel framework that aims t
 
 
 ## Quick Start
-1. Download base model KEEP from [KEEP](https://huggingface.co/Astaxanthin/KEEP) and place the model folder into ./base_models
-2. Download feature of TCGA-UCS extracted using KEEP at [UCS-KEEP-feature](https://drive.google.com/file/d/1RNSIINkumfhiyqwL82hUXALCtdyPhbC3/view?usp=sharing) and place the unziped folder into ./features/keep/ucs/h5_files
-3. Create a conda env
+1. Download base model, such as KEEP from [KEEP](https://huggingface.co/Astaxanthin/KEEP) and place the model folder into ./base_models
+2. Download tile-level features of WSIs, such as TCGA-UCS extracted using KEEP at [UCS-KEEP-feature](https://drive.google.com/file/d/1RNSIINkumfhiyqwL82hUXALCtdyPhbC3/view?usp=sharing) and place the unziped folder into ./features/keep/ucs/h5_files
+3. Create a conda env and run script
  ```bash
 conda create -n pathpt python=3.8 -y
 conda activate pathpt
 pip install -r requirements.txt
+
+python train.py
 ```
-4. Run train.py
 
 ## Customizing
 Want to use your custom pathology datasets or other foundation models? Coming soon.
