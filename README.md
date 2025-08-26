@@ -46,7 +46,15 @@ We benchmarked 4 MILs and PathPT on 11 datasets, covering 4 rare adult cancers, 
 
 <img src="resources/benchmark.png" alt="workflow" width="800" />
 
-Results demonstrate PathPT achieves superior performance over traditional MIL frameworks. Detailed results and analysis can be found in our [paper](https://arxiv.org/abs/2508.15904).
+| **Model** | **zero-shot** | **ABMIL** | **CLAM** | **TransMIL** | **DGRMIL** | **PathPT** |
+|:---------:|:-------------:|:---------:|:--------:|:------------:|:----------:|:----------:|
+| **PLIP**  | 0.111         | 0.419     | 0.410    | 0.488        | 0.491      | 0.251      |
+| **MUSK**  | 0.253         | 0.403     | 0.442    | 0.582        | 0.569      | 0.519      |
+| **CONCH** | 0.204         | 0.542     | 0.549    | 0.621        | 0.621      | 0.491      |
+| **KEEP**  | 0.408         | 0.631     | 0.629    | 0.648        | 0.650      | 0.679      |
+
+
+Results (balanced accuracy) demonstrate PathPT achieves superior performance over traditional MIL frameworks. Detailed results and analysis can be found in our [paper](https://arxiv.org/abs/2508.15904).
 
 
 ## Acknowledgment
