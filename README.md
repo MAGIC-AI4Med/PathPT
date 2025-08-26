@@ -46,16 +46,16 @@ We benchmarked 4 MILs and PathPT on 11 datasets, covering 4 rare adult cancers, 
 
 <img src="resources/benchmark.png" alt="workflow" width="800" />
 
-### Results on ERBAINS
-| **Model** | **zero-shot** | **ABMIL** | **CLAM** | **TransMIL** | **DGRMIL** | **PathPT** |
+### Results on ERBAINS (Balanced Accuracy)
+| **Model** | **zero-shot** | **ABMIL** | **CLAM** | **TransMIL** | **DGRMIL** | **PathPT(Ours)** |
 |:---------:|:-------------:|:---------:|:--------:|:------------:|:----------:|:----------:|
 | **PLIP**  | 0.111         | 0.419     | 0.410    | 0.488        | 0.491      | 0.251      |
 | **MUSK**  | 0.253         | 0.403     | 0.442    | 0.582        | 0.569      | 0.519      |
 | **CONCH** | 0.204         | 0.542     | 0.549    | 0.621        | 0.621      | 0.491      |
 | **KEEP**  | 0.408         | 0.631     | 0.629    | 0.648        | 0.650      | **0.679**      |
 
-### Results on Neuroblastoma
-| **Model** | **zero-shot** | **ABMIL** | **CLAM** | **TransMIL** | **DGRMIL** | **PathPT** |
+### Results on Neuroblastoma (Balanced Accuracy)
+| **Model** | **zero-shot** | **ABMIL** | **CLAM** | **TransMIL** | **DGRMIL** | **PathPT(Ours)** |
 |:---------:|:-------------:|:---------:|:--------:|:------------:|:----------:|:----------:|
 | **PLIP**  | 0.395         | 0.530     | 0.496    | 0.578        | 0.578      | 0.501      |
 | **MUSK**  | 0.427         | 0.554     | 0.513    | 0.605        | 0.585      | 0.554      |
@@ -63,8 +63,8 @@ We benchmarked 4 MILs and PathPT on 11 datasets, covering 4 rare adult cancers, 
 | **KEEP**  | 0.551         | 0.513     | 0.497    | 0.566        | 0.541      | **0.583**      |
 
 
-### Results on UBC-OCEAN
-| **Model** | **zero-shot** | **ABMIL** | **CLAM** | **TransMIL** | **DGRMIL** | **PathPT** |
+### Results on UBC-OCEAN (Balanced Accuracy)
+| **Model** | **zero-shot** | **ABMIL** | **CLAM** | **TransMIL** | **DGRMIL** | **PathPT(Ours)** |
 |:---------:|:-------------:|:---------:|:--------:|:------------:|:----------:|:----------:|
 | **PLIP**  | 0.320         | 0.565     | 0.570    | 0.645        | 0.630      | 0.510      |
 | **MUSK**  | 0.520         | 0.570     | 0.610    | 0.720        | 0.700      | 0.730      |
@@ -73,7 +73,7 @@ We benchmarked 4 MILs and PathPT on 11 datasets, covering 4 rare adult cancers, 
 
 
 
-Results (balanced accuracy) demonstrate PathPT achieves superior performance over traditional MIL frameworks. Detailed results and analysis can be found in our [paper](https://arxiv.org/abs/2508.15904).
+Results demonstrate PathPT achieves superior performance over traditional MIL frameworks. Detailed results and analysis can be found in our [paper](https://arxiv.org/abs/2508.15904).
 
 
 ## Acknowledgment
