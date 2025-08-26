@@ -47,33 +47,30 @@ We benchmarked 4 MILs and PathPT on 11 datasets, covering 4 rare adult cancers, 
 <img src="resources/benchmark.png" alt="workflow" width="800" />
 
 ### Results on ERBAINS (Balanced Accuracy)
-| **Model** | **zero-shot** | **ABMIL** | **CLAM** | **TransMIL** | **DGRMIL** | **PathPT(Ours)** |
+| **Model** | **zero-shot** | **ABMIL[[1]](https://arxiv.org/abs/1802.04712)** | **CLAM[[2]](https://www.nature.com/articles/s41551-020-00682-w)** | **TransMIL[[3]](https://arxiv.org/abs/2106.00908)** | **DGRMIL[[4]](https://arxiv.org/abs/2407.03575)** | **PathPT(Ours)** |
 |:---------:|:-------------:|:---------:|:--------:|:------------:|:----------:|:----------:|
-| **PLIP**  | 0.111         | 0.419     | 0.410    | 0.488        | 0.491      | 0.251      |
-| **MUSK**  | 0.253         | 0.403     | 0.442    | 0.582        | 0.569      | 0.519      |
-| **CONCH** | 0.204         | 0.542     | 0.549    | 0.621        | 0.621      | 0.491      |
-| **KEEP**  | 0.408         | 0.631     | 0.629    | 0.648        | 0.650      | **0.679**      |
+| **PLIP[[5]](https://www.nature.com/articles/s41591-023-02504-3)**  | 0.111         | 0.419     | 0.410    | 0.488        | 0.491      | 0.251      |
+| **MUSK[[6]](https://www.nature.com/articles/s41586-024-08378-w)**  | 0.253         | 0.403     | 0.442    | 0.582        | 0.569      | 0.519      |
+| **CONCH[[7]](https://www.nature.com/articles/s41591-024-02856-4)** | 0.204         | 0.542     | 0.549    | 0.621        | 0.621      | 0.491      |
+| **KEEP[[8]](https://arxiv.org/abs/2412.13126)**  | 0.408         | 0.631     | 0.629    | 0.648        | 0.650      | **0.679**      |
 
 ### Results on Neuroblastoma (Balanced Accuracy)
-| **Model** | **zero-shot** | **ABMIL** | **CLAM** | **TransMIL** | **DGRMIL** | **PathPT(Ours)** |
+| **Model** | **zero-shot** | **ABMIL[[1]](https://arxiv.org/abs/1802.04712)** | **CLAM[[2]](https://www.nature.com/articles/s41551-020-00682-w)** | **TransMIL[[3]](https://arxiv.org/abs/2106.00908)** | **DGRMIL[[4]](https://arxiv.org/abs/2407.03575)** | **PathPT(Ours)** |
 |:---------:|:-------------:|:---------:|:--------:|:------------:|:----------:|:----------:|
-| **PLIP**  | 0.395         | 0.530     | 0.496    | 0.578        | 0.578      | 0.501      |
-| **MUSK**  | 0.427         | 0.554     | 0.513    | 0.605        | 0.585      | 0.554      |
-| **CONCH** | 0.353         | 0.431     | 0.496    | 0.572        | 0.578      | 0.493      |
-| **KEEP**  | 0.551         | 0.513     | 0.497    | 0.566        | 0.541      | **0.583**      |
-
+| **PLIP[[5]](https://www.nature.com/articles/s41591-023-02504-3)**  | 0.395         | 0.530     | 0.496    | 0.578        | 0.578      | 0.501      |
+| **MUSK[[6]](https://www.nature.com/articles/s41586-024-08378-w)**  | 0.427         | 0.554     | 0.513    | 0.605        | 0.585      | 0.554      |
+| **CONCH[[7]](https://www.nature.com/articles/s41591-024-02856-4)** | 0.353         | 0.431     | 0.496    | 0.572        | 0.578      | 0.493      |
+| **KEEP[[8]](https://arxiv.org/abs/2412.13126)**  | 0.551         | 0.513     | 0.497    | 0.566        | 0.541      | **0.583**      |
 
 ### Results on UBC-OCEAN (Balanced Accuracy)
-| **Model** | **zero-shot** | **ABMIL** | **CLAM** | **TransMIL** | **DGRMIL** | **PathPT(Ours)** |
+| **Model** | **zero-shot** | **ABMIL[[1]](https://arxiv.org/abs/1802.04712)** | **CLAM[[2]](https://www.nature.com/articles/s41551-020-00682-w)** | **TransMIL[[3]](https://arxiv.org/abs/2106.00908)** | **DGRMIL[[4]](https://arxiv.org/abs/2407.03575)** | **PathPT(Ours)** |
 |:---------:|:-------------:|:---------:|:--------:|:------------:|:----------:|:----------:|
-| **PLIP**  | 0.320         | 0.565     | 0.570    | 0.645        | 0.630      | 0.510      |
-| **MUSK**  | 0.520         | 0.570     | 0.610    | 0.720        | 0.700      | 0.730      |
-| **CONCH** | 0.375         | 0.590     | 0.605    | 0.710        | 0.715      | 0.790      |
-| **KEEP**  | 0.660         | 0.755     | 0.730    | 0.795        | 0.795      | **0.820**      |
+| **PLIP[[5]](https://www.nature.com/articles/s41591-023-02504-3)**  | 0.320         | 0.565     | 0.570    | 0.645        | 0.630      | 0.510      |
+| **MUSK[[6]](https://www.nature.com/articles/s41586-024-08378-w)**  | 0.520         | 0.570     | 0.610    | 0.720        | 0.700      | 0.730      |
+| **CONCH[[7]](https://www.nature.com/articles/s41591-024-02856-4)** | 0.375         | 0.590     | 0.605    | 0.710        | 0.715      | 0.790      |
+| **KEEP[[8]](https://arxiv.org/abs/2412.13126)**  | 0.660         | 0.755     | 0.730    | 0.795        | 0.795      | **0.820**      |
 
-
-
-Results demonstrate PathPT achieves superior performance over traditional MIL frameworks. Detailed results and analysis can be found in our [paper](https://arxiv.org/abs/2508.15904).
+Results demonstrate PathPT achieves superior performance over traditional MILs. Detailed results and analysis can be found in our [paper](https://arxiv.org/abs/2508.15904).
 
 
 ## Acknowledgment
