@@ -28,8 +28,8 @@ To address this limitation, we propose **PathPT**, a novel framework that aims t
 
 ## Quick Start
 
-1. Download base model, such as KEEP from [KEEP](https://huggingface.co/Astaxanthin/KEEP) and place the model folder into ./base_models
-2. Download tile-level features of WSIs, such as TCGA-UCS extracted using KEEP at [UCS-KEEP-feature](https://drive.google.com/file/d/1RNSIINkumfhiyqwL82hUXALCtdyPhbC3/view?usp=sharing) and place the unziped folder into ./features/keep/ucs/h5_files
+1. Download base model, such as KEEP from [KEEP](https://huggingface.co/Astaxanthin/KEEP) and place the model folder into `./base_models`.
+2. Download tile-level features of WSIs, such as TCGA-UCS extracted using KEEP at [UCS-KEEP-feature](https://drive.google.com/file/d/1RNSIINkumfhiyqwL82hUXALCtdyPhbC3/view?usp=sharing) and place the unziped folder into `./features/keep/ucs/h5_files`.
 3. Create a conda env and run script
 
 ```bash
@@ -133,7 +133,7 @@ For base models **other than PLIP, MUSK, CONCH, or KEEP**, you need to create mo
 2. **`./subtyping/main_wsi_subtyping_YOUR_MODEL.py`** - Training and evaluation pipeline
 3. **`./wsi_selecters/wsi_selecter_YOUR_MODEL.py`** - Patch selection logic
 
-Use the existing KEEP implementations as templates. Key components to implement:
+Use the existing 4 implementations as templates. Key components to implement:
 
 - Model loading and initialization
 - Text encoding pipeline
