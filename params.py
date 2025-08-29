@@ -41,7 +41,6 @@ subtype_params = {
         'use_aug': False, # feature augmentation
         'vision_only': False, # vision only linear probing
         'vision_grad': True, # spatial-awareness module
-        'vision_mil':False,
         'prompt_select': True, # manual prompt selection
         'loss_weight': [1.0,0.5,0.1],
         'accumulation_steps': 1,
