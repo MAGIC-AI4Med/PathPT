@@ -1,7 +1,6 @@
 import torch
 import torch.nn as nn
 import random
-from transmil import TransMIL
 from model_utils import MultiKernelConv1DTrans, AttentionAgg, ConvAttentionAgg, ConvTransAttentionAgg
 
 def prompt_padding(ctx, length, mode='repeat'):
@@ -209,8 +208,6 @@ class PPTKEEP(nn.Module):
         
         self.vision_only = param['vision_only']
         self.vision_grad = param['vision_grad']
-        self.vision_mil = param['vision_mil']
-        
         
         self.vfeat_dim = vfeat_dim
         if self.vision_only:
@@ -222,15 +219,7 @@ class PPTKEEP(nn.Module):
             # self.mlp = MultiKernelConv1DTrans(in_channels=self.vfeat_dim, out_channels=768, cls_num = len(classnames_lst))
             self.mlp = ConvTransAttentionAgg(dim=self.vfeat_dim, cls_num = len(classnames_lst)-1)
         elif self.vision_grad:
-            if self.vision_mil:
-                self.mil = TransMIL(len(classnames_lst)-1,vfeat_dim)
-            else:
-                # self.mlp = nn.Sequential(
-                #     nn.Linear(self.vfeat_dim, self.vfeat_dim),
-                #     nn.ReLU(),
-                #     nn.Linear(self.vfeat_dim, self.vfeat_dim)
-                # )
-                self.mlp = MultiKernelConv1DTrans(in_channels=self.vfeat_dim, out_channels=768)
+            self.mlp = MultiKernelConv1DTrans(in_channels=self.vfeat_dim, out_channels=768)
 
     def forward(self, image_features): #(batch, 768)
         
@@ -245,12 +234,7 @@ class PPTKEEP(nn.Module):
         elif self.vision_grad:
             image_features = image_features.requires_grad_(True)
             # print(image_features.requires_grad)
-            
-            if self.vision_mil:
-                results_dict = self.mil(image_features)
-                image_features = results_dict['patch_feats']
-            else:
-                image_features = self.mlp(image_features)
+            image_features = self.mlp(image_features)
         
         image_features = image_features / image_features.norm(dim=-1, keepdim=True)
         if self.learnable == 'token':
@@ -284,10 +268,7 @@ class PPTKEEP(nn.Module):
             logits = logits.squeeze(0)
         patch_logits = torch.nn.functional.softmax(logits*10,-1)
         
-        if self.vision_mil:
-            wsi_logits = results_dict['logits']
-        else:
-            wsi_logits = None
+        wsi_logits = None
         
         return wsi_logits, patch_logits #sims
 
