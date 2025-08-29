@@ -231,12 +231,7 @@ def train_one_step(epoch, model, device, param, train_loader, train_wsi_loader, 
             with autocast(): 
                 wsi_logits, patch_logits = model(data)
                 patch_loss = PatchSSLoss(patch_logits, patch_labels, epoch=i, total_epoch=epoch, weights=param['loss_weight'], balance=param['balance'], vision_only = param['vision_only'], pseudo_loss = enable_pseudo)
-
-                if param['vision_mil']:
-                    wsi_loss = F.cross_entropy(wsi_logits, label)
-                    loss = wsi_loss + patch_loss['loss']
-                else:
-                    loss = patch_loss['loss']
+                loss = patch_loss['loss']
                 
                 if isinstance(loss,dict):
                     loss = loss['loss']/accumulation_steps

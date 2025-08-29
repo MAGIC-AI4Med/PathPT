@@ -226,11 +226,7 @@ def train_one_step(epoch, model, device, param, train_loader, train_wsi_loader, 
                 wsi_logits, patch_logits = model(data)
                 patch_loss = PatchSSLoss(patch_logits, patch_labels, epoch=i, total_epoch=epoch, weights=param['loss_weight'], balance=param['balance'], vision_only = param['vision_only'], pseudo_loss = enable_pseudo)
 
-                if param['vision_mil']:
-                    wsi_loss = F.cross_entropy(wsi_logits, label)
-                    loss = wsi_loss + patch_loss['loss']
-                else:
-                    loss = patch_loss
+                loss = patch_loss
                 
                 if isinstance(loss,dict):
                     loss = loss['loss']/accumulation_steps
@@ -263,20 +259,9 @@ def train_one_step(epoch, model, device, param, train_loader, train_wsi_loader, 
                 val_dice = evaluation.compute_dice(model, val_wsi_loader, device=device)
                 
         # print(f"Epoch {i} loss: {running_loss.item() / len(dataloader)}, val:{val_result.tolist()}, LR: {current_lr:.8f}")        
-        if param['vision_mil']:
-            patch_result = np.array([val_result_dict['patch_bacc'],val_result_dict['patch_wf1']])
-            patch_rounded = np.around(patch_result, decimals=4).tolist()
-            wsi_result = np.array([val_result_dict['wsi_bacc'],val_result_dict['wsi_wf1']])
-            wsi_rounded = np.around(wsi_result, decimals=4).tolist()
-            ensemble_result = np.array([val_result_dict['ensemble_bacc'],val_result_dict['ensemble_wf1']])
-            ensemble_rounded = np.around(ensemble_result, decimals=4).tolist()
-            logging.info(f"Epoch {i} loss: {running_loss.item()*accumulation_steps / len(train_loader):.4f}, LR: {current_lr:.8f}, patch:{patch_rounded}, wsi:{wsi_rounded}, ensemble:{ensemble_rounded}")
-        else:
-            patch_result = np.array([val_result_dict['patch_bacc'],val_result_dict['patch_wf1']])
-            patch_rounded = np.around(patch_result, decimals=4).tolist()
-            logging.info(f"Epoch {i} loss: {running_loss.item()*accumulation_steps / len(train_loader):.4f}, LR: {current_lr:.8f}, patch_test:{patch_rounded}, train_dice:{train_dice:.4f}, val_dice:{val_dice:.4f}")
-        
-        
+        patch_result = np.array([val_result_dict['patch_bacc'],val_result_dict['patch_wf1']])
+        patch_rounded = np.around(patch_result, decimals=4).tolist()
+        logging.info(f"Epoch {i} loss: {running_loss.item()*accumulation_steps / len(train_loader):.4f}, LR: {current_lr:.8f}, patch_test:{patch_rounded}, train_dice:{train_dice:.4f}, val_dice:{val_dice:.4f}")
         # torch.save(model, os.path.join(params.SAVE_DIR, f'epoch_latest.pt'))
     # timestamp = datetime.now().strftime("%m%d%H%M%S")
     # torch.save(model.prompt_learner.ctx, os.path.join(params.SAVE_DIR, f'pt{timestamp}.pt'))
