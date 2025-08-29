@@ -39,6 +39,7 @@ pip install -r requirements.txt
 
 python train.py
 ```
+*Note: Some may encounter issues with `Nystrom-Attention`, please refer to [https://github.com/szc19990412/TransMIL/issues/33](https://github.com/szc19990412/TransMIL/issues/33)*.
 
 ## Customizing
 
