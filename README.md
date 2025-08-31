@@ -7,9 +7,8 @@
 [![arXiv](https://img.shields.io/badge/arXiv-2508.15904-b31b1b.svg)](https://arxiv.org/abs/2508.15904)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 [![Python](https://img.shields.io/badge/Python-3.8+-3776ab.svg)](https://www.python.org/)
-[![PyTorch](https://img.shields.io/badge/PyTorch-1.9+-ee4c2c.svg)](https://pytorch.org/)
 
-[📄 Paper](https://arxiv.org/abs/2508.15904) • [🔧 Quick Start](#-quick-start) • [📊 Benchmark](#-benchmark) • [💡 Citation](#-citation)
+[📄 Paper](https://arxiv.org/abs/2508.15904) • [🔧 Quick Start](#-quick-start) • [📊 Benchmark](#-benchmark-results) • [💡 Citation](#-citation)
 
 </div>
 
@@ -52,11 +51,11 @@
 ### 📦 Installation
 
 ```bash
-# 🐍 Create and activate conda environment
+# Create and activate conda environment
 conda create -n pathpt python=3.8 -y
 conda activate pathpt
 
-# 📥 Install dependencies
+# Install dependencies
 pip install -r requirements.txt
 ```
 
@@ -81,11 +80,7 @@ Want to use your own datasets and foundation models? We've got you covered! 🎉
 
 ### 🤖 Base Model Setup
 
-Download your foundation model into `./base_models/`, e.g.:
-- 🔥 [KEEP](https://huggingface.co/Astaxanthin/KEEP) [[1]](https://arxiv.org/abs/2412.13126)
-- 🧠 [CONCH](https://huggingface.co/MahmoodLab/conch) [[2]](https://www.nature.com/articles/s41591-024-02856-4)
-- 🦣 [MUSK](https://huggingface.co/xiangjx/musk) [[3]](https://www.nature.com/articles/s41586-024-08378-w)
-- 🖼️ [PLIP](https://huggingface.co/vinid/plip) [[4]](https://www.nature.com/articles/s41591-023-02504-3)
+Download your foundation model into `./base_models/`, e.g.: [KEEP](https://huggingface.co/Astaxanthin/KEEP) [[1]](https://arxiv.org/abs/2412.13126), [CONCH](https://huggingface.co/MahmoodLab/conch) [[2]](https://www.nature.com/articles/s41591-024-02856-4), [MUSK](https://huggingface.co/xiangjx/musk) [[3]](https://www.nature.com/articles/s41586-024-08378-w), [PLIP](https://huggingface.co/vinid/plip) [[4]](https://www.nature.com/articles/s41591-023-02504-3).
 
 > **💡 Important**: Only vision-language models with patch encoders are supported!
 
@@ -134,11 +129,11 @@ from transformers import AutoModel
 from torchvision import transforms
 from PIL import Image
 
-# 🚀 Load your base model
+# Load your base model
 model = AutoModel.from_pretrained("Astaxanthin/KEEP", trust_remote_code=True)
 model.eval()
 
-# 🖼️ Setup transforms
+# 🖼Setup transforms
 transform = transforms.Compose([
     transforms.Resize(size=224, interpolation=transforms.InterpolationMode.BICUBIC),
     transforms.CenterCrop(size=(224, 224)),
@@ -146,7 +141,7 @@ transform = transforms.Compose([
     transforms.Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225))
 ])
 
-# 📸 Process patch
+# Process patch
 example_patch_path = 'YOUR_PATCH_IMG_FILE'
 example_patch = Image.open(example_patch_path).convert('RGB')
 patch_feature = model.encode_image(transform(example_patch).unsqueeze(0))
@@ -188,10 +183,10 @@ subtype_params['your_dataset'] = {
 
 #### 2️⃣ Modify `./train.py`:
 ```python
-# 🔄 Change import to your model
+# Change import to your model
 from subtyping.main_wsi_subtyping_YOUR_MODEL import main_subtyping
 
-# 🎯 Set your dataset
+# Set your dataset
 proc_tumor = 'your_dataset'
 ```
 
@@ -251,12 +246,7 @@ Using foundation models: **PLIP**, **MUSK**, **CONCH**, and **KEEP**.
 
 ## 🙏 Acknowledgments
 
-This project builds upon amazing work from the community:
-- 🔬 [CLAM](https://github.com/mahmoodlab/CLAM)
-- 🎯 [CoOp](https://github.com/KaiyangZhou/CoOp)
-- 🚀 [TransMIL](https://github.com/szc19990412/TransMIL)
-
-Big thanks to all the authors and developers! 👏
+This project builds upon amazing work from the community such as [CLAM](https://github.com/mahmoodlab/CLAM), [CoOp](https://github.com/KaiyangZhou/CoOp), [TransMIL](https://github.com/szc19990412/TransMIL). Big thanks to all the authors and developers! 👏
 
 ---
 
@@ -284,5 +274,6 @@ If you find our work useful, please consider citing our paper:
 **🌟 Star us on GitHub if this helps your research! 🌟**
 
 [![Star History Chart](https://api.star-history.com/svg?repos=your-username/PathPT&type=Date)](https://star-history.com/#your-username/PathPT&Date)
+
 
 </div> -->
