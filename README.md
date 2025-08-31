@@ -39,7 +39,7 @@ pip install -r requirements.txt
 
 python train.py
 ```
-*Note: Some may encounter issues with `Nystrom-Attention`, please refer to [https://github.com/szc19990412/TransMIL/issues/33](https://github.com/szc19990412/TransMIL/issues/33)*.
+*Note: Some may encounter issues with `Nystrom-Attention`, please refer to [https://github.com/szc19990412/TransMIL/issues/33](https://github.com/szc19990412/TransMIL/issues/33).*
 
 ## Customizing
 
@@ -49,7 +49,7 @@ Want to use your custom datasets and other foundation models? Follow the below s
 
 Download your base model into the `./base_models` folder, e.g., [KEEP](https://huggingface.co/Astaxanthin/KEEP)[[1]](https://arxiv.org/abs/2412.13126), [CONCH](https://huggingface.co/MahmoodLab/conch)[[2]](https://www.nature.com/articles/s41591-024-02856-4), [MUSK](https://huggingface.co/xiangjx/musk)[[3]](https://www.nature.com/articles/s41586-024-08378-w) and [PLIP](https://huggingface.co/vinid/plip)[[4]](https://www.nature.com/articles/s41591-023-02504-3).
 
-**Note:** Only vision-language models with patch encoders can be used as base models.
+*Note: Only vision-language models with patch encoders can be used as base models.*
 
 ### Dataset Division
 
@@ -131,15 +131,14 @@ Place your h5 files in `./features/YOUR_DATASET/YOUR_MODEL/h5_files/`. For h5 fi
 For base models **other than PLIP, MUSK, CONCH, or KEEP**, you need to create model-specific files:
 
 1. **`./models/PathPT_model_YOUR_MODEL.py`** - Model architecture implementation
-2. **`./subtyping/main_wsi_subtyping_YOUR_MODEL.py`** - Training and evaluation pipeline
-3. **`./wsi_selecters/wsi_selecter_YOUR_MODEL.py`** - Patch selection logic
+2. **`./wsi_selecters/wsi_selecter_YOUR_MODEL.py`** - Patch selection logic
+3. **`./subtyping/main_wsi_subtyping_YOUR_MODEL.py`** - Training and evaluation pipeline
 
 Use the existing 4 implementations as templates. Key components to implement:
 
 - Model loading and initialization
 - Text encoding pipeline
 - Image feature processing
-- Prompt learning mechanism
 
 ### Configuration
 
