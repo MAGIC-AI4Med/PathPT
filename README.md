@@ -125,15 +125,11 @@ Extract visual features from WSI patches using your foundation model:
 <summary>🔧 Example with KEEP</summary>
 
 ```python
-from transformers import AutoModel
-from torchvision import transforms
-from PIL import Image
-
 # Load your base model
 model = AutoModel.from_pretrained("Astaxanthin/KEEP", trust_remote_code=True)
 model.eval()
 
-# 🖼Setup transforms
+# Setup transforms
 transform = transforms.Compose([
     transforms.Resize(size=224, interpolation=transforms.InterpolationMode.BICUBIC),
     transforms.CenterCrop(size=(224, 224)),
@@ -277,3 +273,4 @@ If you find our work useful, please consider citing our paper:
 
 
 </div> -->
+
