@@ -159,9 +159,9 @@ For **new foundation models**, create these template files:
 
 | File | Purpose | 📝 Template |
 |------|---------|-------------|
-| `./models/PathPT_model_YOUR_MODEL.py` | Model architecture | [Template](./templates/PathPT_model_YOUR_MODEL.py) |
-| `./wsi_selecters/wsi_selecter_YOUR_MODEL.py` | Patch selection | [Template](./templates/wsi_selecter_YOUR_MODEL.py) |
-| `./subtyping/main_wsi_subtyping_YOUR_MODEL.py` | Training pipeline | [Template](./templates/main_wsi_subtyping_YOUR_MODEL.py) |
+| `./models/PathPT_model_YOUR_MODEL.py` | Model architecture | [Template](./models/PathPT_model_YOUR_MODEL.py) |
+| `./wsi_selecters/wsi_selecter_YOUR_MODEL.py` | Patch selection | [Template](./wsi_selecters/wsi_selecter_YOUR_MODEL.py) |
+| `./subtyping/main_wsi_subtyping_YOUR_MODEL.py` | Training pipeline | [Template](./subtyping/main_wsi_subtyping_YOUR_MODEL.py) |
 
 ### ⚙️ Configuration
 
@@ -273,4 +273,5 @@ If you find our work useful, please consider citing our paper:
 
 
 </div> -->
+
 
