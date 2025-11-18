@@ -3,9 +3,10 @@ from sklearn.metrics import balanced_accuracy_score, classification_report, conf
 import numpy as np
 import warnings
 from tqdm import tqdm
+import os
 warnings.filterwarnings("ignore", category=UserWarning)
 
-def sub_bacc_wf1(model, test_loader, device, normal_ext=False, batch_classifier=None, model_type = 'fewshot', prompt_embedding = None, save_logits = False, vision_only = False):
+def sub_bacc_wf1(model, test_loader, device, normal_ext=False, batch_classifier=None, model_type = 'fewshot', prompt_embedding = None, save_logits=True, save_dir = None, vision_only = False):
     model.eval()
     if batch_classifier:
         batch_classifier.eval()
@@ -95,7 +96,8 @@ def sub_bacc_wf1(model, test_loader, device, normal_ext=False, batch_classifier=
     results = {}
     if len(pred_labels_patch) > 0:
         print('***** patch result:')
-        print(confusion_matrix(gt_labels,pred_labels_patch))
+        cm = confusion_matrix(gt_labels,pred_labels_patch)
+        print(cm)
         patch_bacc = balanced_accuracy_score(gt_labels, pred_labels_patch)
         report = classification_report(gt_labels, pred_labels_patch, output_dict=True, zero_division=0)
         patch_wf1 = report['weighted avg']['f1-score']
@@ -103,16 +105,26 @@ def sub_bacc_wf1(model, test_loader, device, normal_ext=False, batch_classifier=
         results['patch_bacc'] = patch_bacc
         results['patch_wf1'] = patch_wf1
         results['logits'] = all_logits
+
+        if save_dir:
+            if not os.path.exists(save_dir):
+                os.makedirs(save_dir)
+            np.save(save_dir + '/gt_labels.npy', np.array(gt_labels))
+            np.save(save_dir + '/pred_labels.npy', np.array(pred_labels_patch))
+            np.save(save_dir + '/confusion_matrix_patch.npy', cm)
+            if model_type != 'zeroshot':
+                torch.save(model.prompt_learner.ctx, save_dir + '/prompt_embedding.pt')
+                torch.save(model.mlp.state_dict(), save_dir + '/spatial_aware_module.pt')
     
     if vision_only:
         print('***** wsi cls token result:')
-        print(confusion_matrix(gt_labels,pred_labels_mil))
+        cm = confusion_matrix(gt_labels,pred_labels_mil)
+        print(cm)
         wsi_bacc = balanced_accuracy_score(gt_labels, pred_labels_mil)
         report = classification_report(gt_labels, pred_labels_mil, output_dict=True, zero_division=0)
         wsi_wf1 = report['weighted avg']['f1-score']
 
         results['wsi_bacc'] = wsi_bacc
-        results['wsi_wf1'] = wsi_wf1
 
     return results
 

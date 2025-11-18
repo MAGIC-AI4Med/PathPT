@@ -54,6 +54,7 @@
 # Create and activate conda environment
 conda create -n pathpt python=3.8 -y
 conda activate pathpt
+conda install openslide=3.4.1
 
 # Install dependencies
 pip install -r requirements.txt
@@ -65,7 +66,12 @@ pip install -r requirements.txt
 
 2. **💾 Download Features**: Get pre-extracted features like [UCS-KEEP-features](https://drive.google.com/file/d/1RNSIINkumfhiyqwL82hUXALCtdyPhbC3/view?usp=sharing) and place in `./features/keep/ucs/h5_files/`
 
-3. **🏃‍♂️ Run Training**:
+3. **🏃‍♂️ Run PathPT**:
+   For quick start:
+   ```bash
+   quick_start_inference.ipynb
+   ```
+   For training:
    ```bash
    python train.py
    ```
@@ -115,7 +121,7 @@ Download your foundation model into `./base_models/`, e.g.: [KEEP](https://huggi
 #### 2️⃣ Create CSV files in `./multifold/` with columns:
 `train`, `train_label`, `val`, `val_label`, `test`, `test_label`
 
-📝 See `./multifold/dataset_csv_10shot/TCGA/UCS/fold0.csv` for reference.
+📝 See `./multifold/dataset_csv_10shot/TCGA/UCS/fold5.csv` for reference.
 
 ### 🔍 Feature Extraction
 
@@ -169,30 +175,35 @@ For **new foundation models**, create these template files:
 ```python
 subtype_params['your_dataset'] = {
     'dataset_name': 'your_dataset',
-    'dataset_path': './multifold/dataset_csv_10shot/YOUR_DATASET',
     'your_model_feature_root': './features/your_dataset/your_model/h5_files',
-    'shot': 10,
-    'epochs': 50,
+    'patch_num': None,
+    'repeats':10
     # ... other parameters
 }
 ```
 
-#### 2️⃣ Modify `./train.py`:
+#### 2️⃣ Update `./utils.py`:
+```python
+your_dataset_names = {
+  'subtype1': ['name1', 'name2'],
+  'subtype2': ['name1', 'name2'],
+  'Normal': ['name1', 'name2', 'name3']
+  }
+```
+
+#### 3️⃣ Modify `./train.py`:
 ```python
 # Change import to your model
-from subtyping.main_wsi_subtyping_YOUR_MODEL import main_subtyping
-
-# Set your dataset
-proc_tumor = 'your_dataset'
+from subtyping.main_wsi_subtyping_YOUR_MODEL import main_subtyping as main_YOUR_MODEL
 ```
 
 ### 🏃‍♂️ Run Training
 
 ```bash
-python train.py
+python train.py --model YOUR_MODEL --dataset YOUR_DATASET --shot 10
 ```
 
-**📊 Monitor Progress**: Check training logs in `./logs/` for progress and metrics!
+**📊 Monitor Progress**: Check training logs in `./logs` and `./fewshot_results`for progress and metrics!
 
 ---
 
@@ -218,14 +229,14 @@ Using foundation models: **PLIP**, **MUSK**, **CONCH**, and **KEEP**.
 | **CONCH** | 0.204 | 0.542 | 0.549 | 0.621 | 0.621 | 0.491 |
 | **KEEP** | 0.408 | 0.631 | 0.629 | 0.648 | 0.650 | **🏆 0.679** |
 
-### 🧬 Neuroblastoma Results (Balanced Accuracy)
+### 🧬 Hepatoblastoma Results (Balanced Accuracy)
 
 | **Model** | **Zero-shot** | **ABMIL** | **CLAM** | **TransMIL** | **DGRMIL** | **PathPT (Ours)** |
 |:---------:|:-------------:|:---------:|:--------:|:------------:|:----------:|:-----------------:|
-| **PLIP** | 0.395 | 0.530 | 0.496 | 0.578 | 0.578 | 0.501 |
-| **MUSK** | 0.427 | 0.554 | 0.513 | 0.605 | 0.585 | 0.554 |
-| **CONCH** | 0.353 | 0.431 | 0.496 | 0.572 | 0.578 | 0.493 |
-| **KEEP** | 0.551 | 0.513 | 0.497 | 0.566 | 0.541 | **🏆 0.583** |
+| **PLIP** | 0.278 | 0.370 | 0.363 | 0.384 | 0.435 | 0.349 |
+| **MUSK** | 0.395 | 0.262 | 0.378 | 0.447 | 0.436 | 0.438 |
+| **CONCH** | 0.276 | 0.376 | 0.374 | 0.518 | 0.491 | **🏆 0.534** |
+| **KEEP** | 0.313 | 0.383 | 0.378 | 0.492 | 0.444 | 0.524 |
 
 ### 🌊 UBC-OCEAN Results (Balanced Accuracy)
 

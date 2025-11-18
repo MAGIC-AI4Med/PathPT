@@ -1,3 +1,5 @@
+# To run pathpt on your own dataset, you need to record subtype names in this file with format like 'datasetname_names'
+
 import h5py
 import json
 
@@ -35,20 +37,6 @@ brca_names = {'Invasive Ductal Carcinoma': ['breast invasive ductal carcinoma',
                     'Normal': ['normal breast tissue',
                                'breast normal tissue',
                                'breast non-cancerous tissue'
-                               ]
-
-                    }
-nsclc_names = {'Lung Adenocarcinoma': ['lung adenocarcinoma',
-                             'adenocarcinoma of the lung',
-                            #  'LUAD',
-                             ],
-                    'Lung Squamous Cell Carcinoma': ['lung squamous cell carcinoma',
-                             'squamous cell carcinoma of the lung',
-                            #  'LUSC'
-                             ],
-                    'Normal': ['normal lung tissue',
-                               'lung normal tissue',
-                               'lung non-cancerous tissue'
                                ]
                     }
 
@@ -172,78 +160,6 @@ ebrains_names = {'Glioblastoma__IDH-wildtype': ['glioblastoma, IDH-wildtype', 'g
                       'Normal': ['normal brain tissue', 'brain normal tissue','brain non-cancerous tissue']
         
 }
-
-shenmu_names = {'Ganglioneuroblastoma, nodular(and other composite neuroblastic tumours)':['Ganglioneuroblastoma, nodular',
-                                                                                           'nodular ganglioneuroblastoma'],
-                'Ganglioneuroblastoma, intermixed': ['ganglioneuroblastoma, intermixed',
-                        'intermixed ganglioneuroblastoma',    
-                        'intermixed schwannian stroma-rich ganglioneuroblastoma',
-                        ],
-                'Differentiating neuroblastoma': ['differentiating neuroblastoma',
-                        'neuroblastoma, differentiating type',
-                        ],
-                'Poorly differentiated neuroblastoma': ['poorly differentiated neuroblastoma',
-                            'neuroblastoma, poorly differentiated type',
-                            ],
-                'Normal': ['normal nerve tissue',
-                           'nerve normal tissue',
-                        'nerve non-cancerous tissue',
-                        ]
-                    }
-
-suimu_names = {'Large Cell/Anaplastic medulloblastoma': ['large cell medulloblastoma',
-                'anaplastic medulloblastoma',
-                            ],
-               'Desmoplastic nodular medulloblastoma': ['desmoplastic nodular medulloblastoma',
-                        'nodular medulloblastoma',
-                        ],
-                'Classic medulloblastoma': ['classic medulloblastoma',
-                        'classic medulloblastoma, childhood',
-                        ],
-                'Normal': ['normal brain tissue',
-                           'brain normal tissue',
-                        'brain non-cancerous tissue',
-                        ]
-                    }
-
-ganmu_names = {'Epithelial macrotrabecular pattern of hepatoblastoma': ['epithelial macrotrabecular pattern of hepatoblastoma',
-                'macrotrabecular hepatoblastoma',
-                            ],
-               'Mixed epithelial and mesenchymal hepatoblastoma': ['mixed epithelial and mesenchymal hepatoblastoma',
-                        'hepatoblastoma with mixed epithelial and mesenchymal pattern',
-                        ],
-                'Epithelial mixed fetal and embryonal hepatoblastoma': ['epithelial mixed fetal and embryonal hepatoblastoma',
-                        'epithelial hepatoblastoma with mixed fetal and embryonal pattern',
-                        ],
-                'Pure fetal hepatoblastoma with low mitotic activity': ['pure fetal hepatoblastoma with low mitotic activity',
-                           'well-differentiated fetal hepatoblastoma',
-                        ],
-                'Normal': ['normal liver tissue',
-                        'liver normal tissue',
-                        'liver non-cancerous tissue',
-                        ]
-                    }
-
-shenzangmu_names = {'Nephroblastoma, blastemal type': ['nephroblastoma, blastemal type', 
-                                                       'blastemal nephroblastoma' ],
-                    
-                'Nephroblastoma, stromal type': ['nephroblastoma, stromal type', 
-                                                 'stromal nephroblastoma'],
-                
-                'Mixed blastemal and epithelial nephroblastoma': ['mixed blastemal and epithelial nephroblastoma', 
-                                                                  'nephroblastoma with mixed blastemal and epithelial pattern'],
-                
-                'Mixed blastemal and stromal nephroblastoma': ['mixed blastemal and stromal nephroblastoma', 
-                                                                  'nephroblastoma with mixed blastemal and stromal pattern'],
-                
-                'Mixed blastemal, epithelial and stromal nephroblastoma': ['mixed blastemal, epithelial and stromal nephroblastoma', 
-                                                                           'nephroblastoma with mixed blastemal, epithelial and stromal pattern'],
-                
-                'Normal': ['normal kidney tissue',
-                        'kidney normal tissue',
-                        'kidney non-cancerous tissue',
-                        ],
-                }
 
 
 sarc_names = {'Dedifferentiated liposarcoma':['dedifferentiated liposarcoma',

@@ -9,3 +9,4 @@ numpy==1.24.4
 h5py==3.11.0
 tqdm==4.66.4
 nystrom-attention==0.0.9
+openslide-python==1.3.1
