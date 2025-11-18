@@ -32,7 +32,7 @@ from loss import calpatch_loss, PatchSSLoss, balanced_ce_loss
 
 os.environ["TOKENIZERS_PARALLELISM"] = "false"
 
-def main_subtyping(dataset_name, cfg=params.PromptLearnerConfig(input_size=256), metric=evaluation.simple_dice_auc, save_name=None, given_param=None):
+def main_subtyping(dataset_name, cfg=params.PromptLearnerConfig(input_size=256), metric=evaluation.simple_dice_auc, given_param=None):
     """
     Main function for subtyping with YOUR_MODEL
     
@@ -202,7 +202,7 @@ def multiple_trains_and_eval(cfg,
         # TODO: Replace with your zero-shot model
         zero_shot_model = None  # TODO: Create your zero-shot model here
         
-        zero_shot_results_dict = metric(zero_shot_model, test_wsi_loader, device, batch_classifier=None, model_type='zeroshot')
+        zero_shot_results_dict = metric(zero_shot_model, test_wsi_loader, device, batch_classifier=None, model_type='zeroshot', save_dir=f'./fewshot_results/{os.path.basename(param["log_name"])[:-4]}/zeroshot')
         zero_shot_result = np.array([zero_shot_results_dict['patch_bacc'], zero_shot_results_dict['patch_wf1']])
         logging.info(f"Zeroshot result{zero_shot_result}")
 
@@ -222,7 +222,9 @@ def multiple_trains_and_eval(cfg,
                    metric, 
                    param=param,
                    selected_prompt_embedding=selected_prompt_embedding, 
-                   device=device)
+                   device=device,
+                   save_dir = f'./fewshot_results/{os.path.basename(param["log_name"])[:-4]}/fold{i}'
+                   )
 
 def train_anno(cfg, 
                classnames_list,
@@ -236,7 +238,9 @@ def train_anno(cfg,
                metric, 
                param,
                selected_prompt_embedding=None, 
-               device="cuda:0"):
+               device="cuda:0",
+               save_dir=None
+               ):
     """
     Training and annotation function
     """
@@ -262,7 +266,9 @@ def train_anno(cfg,
                               metric, 
                               test_loader, 
                               selected_prompt_embedding=selected_prompt_embedding,
-                              enable_pseudo=param['enable_pseudo'])
+                              enable_pseudo=param['enable_pseudo'],
+                              save_dir=save_dir
+                              )
 
 def model_init(cfg, classnames_list, base_model, base_tokenizer, device, param, vfeat_dim):
     """
@@ -298,7 +304,7 @@ def model_init(cfg, classnames_list, base_model, base_tokenizer, device, param, 
 
 def train_one_step(epoch, model, device, param, train_loader, train_wsi_loader, val_wsi_loader, 
                    label_model, label_type, optimizer, scheduler, metric, test_loader, 
-                   selected_prompt_embedding=None, enable_pseudo=True):
+                   selected_prompt_embedding=None, enable_pseudo=True, save_dir=None):
     """
     Training loop for one step
     """
@@ -381,10 +387,10 @@ def train_one_step(epoch, model, device, param, train_loader, train_wsi_loader, 
         with torch.no_grad():
             if isinstance(metric, dict):
                 train_patch_result_dict = metric['patch'](model, test_loader['patch'], device=device, batch_classifier=None)
-                val_result_dict = metric['wsi'](model, test_loader['wsi'], device=device, batch_classifier=None)
+                val_result_dict = metric['wsi'](model, test_loader['wsi'], device=device, batch_classifier=None, save_dir=save_dir)
             else:
                 val_result_dict = metric(model, test_loader, device=device, batch_classifier=None, 
-                                       model_type='fewshot-mil', vision_only=param['vision_only'])
+                                       model_type='fewshot-mil', vision_only=param['vision_only'], save_dir=save_dir)
             
             # TODO: Add model-specific evaluation metrics if needed
             # For example, CONCH computes dice scores:

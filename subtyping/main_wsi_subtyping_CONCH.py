@@ -2,7 +2,7 @@ import os
 import torch
 import torch.optim as optim
 from torch.utils.data import DataLoader
-from models.PathPT_model_CONCH import OriginCONCH, PPLCONCH
+from models.PathPT_model_CONCH import OriginCONCH, PPTCONCH
 import torch.nn.functional as F
 from WSI_dataset import WSI_Data
 import random
@@ -20,9 +20,12 @@ import open_clip_CONCH as conch_clip
 
 os.environ["TOKENIZERS_PARALLELISM"] = "false"
 
-def main_subtyping(dataset_name, cfg = params.PromptLearnerConfig(input_size=256),  metric = evaluation.simple_dice_auc, save_name = None):
+def main_subtyping(dataset_name, cfg = params.PromptLearnerConfig(input_size=256),  metric = evaluation.simple_dice_auc, given_param=None):
     
-    param = params.subtype_params[dataset_name]
+    if given_param is not None:
+        param = given_param
+    else:
+        param = params.subtype_params[dataset_name]
 
     model_path = params.CONCH_PATH
     with open(params.DATASET_DIVISION, 'r') as f:
@@ -114,7 +117,7 @@ def multiple_trains_and_eval(cfg,
             zeroshot_prompt.append(cls_prompt[index])
 
         zero_shot_model = OriginCONCH(zeroshot_prompt, base_model, device)
-        zero_shot_results_dict = metric(zero_shot_model, test_wsi_loader, device, batch_classifier=None, model_type = 'zeroshot')
+        zero_shot_results_dict = metric(zero_shot_model, test_wsi_loader, device, batch_classifier=None, model_type = 'zeroshot', save_dir=f'./fewshot_results/{os.path.basename(param["log_name"])[:-4]}/zeroshot')
         zero_shot_result = np.array([zero_shot_results_dict['patch_bacc'],zero_shot_results_dict['patch_wf1']])
         logging.info(f"Zeroshot result{zero_shot_result}")
 
@@ -134,6 +137,7 @@ def multiple_trains_and_eval(cfg,
                     param = param,
                     selected_prompt_embedding = selected_prompt_embedding, 
                     device=device,
+                    save_dir = f'./fewshot_results/{os.path.basename(param["log_name"])[:-4]}/fold{i}'
                 )
 
 
@@ -149,6 +153,7 @@ def train_anno(cfg,
                param,
                selected_prompt_embedding = None, 
                device="cuda:0", 
+               save_dir=None
             ):
     init_model, optimizer, scheduler = model_init(cfg, classnames_list, base_model, device, param, vfeat_dim = 512)
     model_v1 = train_one_step(param['epochs'], 
@@ -165,11 +170,13 @@ def train_anno(cfg,
                               metric, 
                               test_loader, 
                               selected_prompt_embedding = selected_prompt_embedding,
-                              enable_pseudo = param['enable_pseudo'])
+                              enable_pseudo = param['enable_pseudo'],
+                              save_dir=save_dir
+                              )
     
     
 def model_init(cfg, classnames_list, base_model, device, param, vfeat_dim):
-    model = PPLCONCH(cfg, classnames_list, base_model, device, param, vfeat_dim)
+    model = PPTCONCH(cfg, classnames_list, base_model, device, param, vfeat_dim)
     
     ### Freeze all parameters except prompt_learner.ctx ###
     for name, parameters in model.named_parameters():
@@ -184,11 +191,11 @@ def model_init(cfg, classnames_list, base_model, device, param, vfeat_dim):
     lambda0 = lambda cur_iter: cur_iter / warm_up_iter if  cur_iter < warm_up_iter else \
             0.5 * (1.0 + np.cos(np.pi * (cur_iter - warm_up_iter) / (param['epochs'] - warm_up_iter)))
     scheduler = optim.lr_scheduler.LambdaLR(optimizer, lr_lambda=lambda0)
-    
+
     return model, optimizer, scheduler
     
     
-def train_one_step(epoch, model, device, param, train_loader, train_wsi_loader, val_wsi_loader, label_model, label_type, optimizer, scheduler, metric, test_loader, selected_prompt_embedding = None, enable_pseudo = True):
+def train_one_step(epoch, model, device, param, train_loader, train_wsi_loader, val_wsi_loader, label_model, label_type, optimizer, scheduler, metric, test_loader, selected_prompt_embedding = None, enable_pseudo = True, save_dir=None):
     for i in range(epoch):
         ### train the model ###
         model.train()
@@ -250,18 +257,18 @@ def train_one_step(epoch, model, device, param, train_loader, train_wsi_loader, 
         with torch.no_grad():
             if isinstance(metric,dict):
                 train_patch_result_dict = metric['patch'](model, test_loader['patch'], device=device, batch_classifier=None)
-                val_result_dict = metric['wsi'](model, test_loader['wsi'], device=device, batch_classifier=None)
+                val_result_dict = metric['wsi'](model, test_loader['wsi'], device=device, batch_classifier=None, save_dir=save_dir)
             else:
-                val_result_dict = metric(model, test_loader, device=device, batch_classifier=None, model_type = 'fewshot-mil', vision_only = param['vision_only'])
+                val_result_dict = metric(model, test_loader, device=device, batch_classifier=None, model_type = 'fewshot-mil', vision_only = param['vision_only'], save_dir=save_dir)
                 
                 ## compute dice on train and val
-                train_dice = evaluation.compute_dice(model, train_wsi_loader, device=device)
-                val_dice = evaluation.compute_dice(model, val_wsi_loader, device=device)
+                # train_dice = evaluation.compute_dice(model, train_wsi_loader, device=device)
+                # val_dice = evaluation.compute_dice(model, val_wsi_loader, device=device)
                 
         # print(f"Epoch {i} loss: {running_loss.item() / len(dataloader)}, val:{val_result.tolist()}, LR: {current_lr:.8f}")        
         patch_result = np.array([val_result_dict['patch_bacc'],val_result_dict['patch_wf1']])
         patch_rounded = np.around(patch_result, decimals=4).tolist()
-        logging.info(f"Epoch {i} loss: {running_loss.item()*accumulation_steps / len(train_loader):.4f}, LR: {current_lr:.8f}, patch_test:{patch_rounded}, train_dice:{train_dice:.4f}, val_dice:{val_dice:.4f}")
+        logging.info(f"Epoch {i} loss: {running_loss.item()*accumulation_steps / len(train_loader):.4f}, LR: {current_lr:.8f}, patch_test:{patch_rounded}")
         # torch.save(model, os.path.join(params.SAVE_DIR, f'epoch_latest.pt'))
     # timestamp = datetime.now().strftime("%m%d%H%M%S")
     # torch.save(model.prompt_learner.ctx, os.path.join(params.SAVE_DIR, f'pt{timestamp}.pt'))
