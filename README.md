@@ -181,6 +181,8 @@ subtype_params['your_dataset'] = {
     # ... other parameters
 }
 ```
+> **💡 Note**: Init pattern of learning prompts can be customized here.
+
 
 #### 2️⃣ Update `./utils.py`:
 ```python
@@ -190,6 +192,7 @@ your_dataset_names = {
   'Normal': ['name1', 'name2', 'name3']
   }
 ```
+> **💡 Note**: Subtype names used in prompts can be customized here.
 
 #### 3️⃣ Modify `./train.py`:
 ```python
@@ -284,5 +287,6 @@ If you find our work useful, please consider citing our paper:
 
 
 </div> -->
+
 
 
