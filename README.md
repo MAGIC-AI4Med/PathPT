@@ -80,6 +80,27 @@ pip install -r requirements.txt
 
 ---
 
+## 🧸 KidRare Dataset
+
+We have released **KidRare**, a specialized WSI dataset focused on rare pediatric tumors, to facilitate research in computational pathology.
+
+### 📊 Dataset Overview
+- **Content**: 1,232 WSIs
+- **Cancer Types**: Neuroblastoma, Nephroblastoma, Medulloblastoma, Hepatoblastoma
+- **License**: CC-BY-NC-ND-3.0 (Non-commercial, Academic Research Only)
+
+### 📥 Access & Labels
+
+**1. Download Images**:
+The dataset is hosted on Hugging Face. You need to request access and agree to the terms of use.
+> 🔗 **Hugging Face Link**: [https://huggingface.co/datasets/Firehdx233/KidRare](https://huggingface.co/datasets/Firehdx233/KidRare)
+
+**2. Get Labels & Splits**:
+The label files and dataset division used in our paper can be found directly in this repository:
+- 📂 **File Path**: [`multifold/dataset_division.json`](https://github.com/MAGIC-AI4Med/PathPT/blob/main/multifold/dataset_division.json)
+
+---
+
 ## 🛠️ Customization Guide
 
 Want to use your own datasets and foundation models? We've got you covered! 🎉
@@ -287,6 +308,7 @@ If you find our work useful, please consider citing our paper:
 
 
 </div> -->
+
 
 
 
