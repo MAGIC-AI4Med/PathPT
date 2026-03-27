@@ -2,13 +2,13 @@
 
 <div align="center">
 
-**🚀 Boosting Pathology Foundation Models via Few-shot Prompt-tuning for Rare Cancer Subtyping**
+**🚀 Boosting Pathology Foundation Models via Few-shot Prompt-tuning for Rare Cancer Subtyping [Nat. Commun.]**
 
 [![arXiv](https://img.shields.io/badge/arXiv-2508.15904-b31b1b.svg)](https://arxiv.org/abs/2508.15904)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 [![Python](https://img.shields.io/badge/Python-3.8+-3776ab.svg)](https://www.python.org/)
 
-[📄 Paper](https://arxiv.org/abs/2508.15904) • [🔧 Quick Start](#-quick-start) • [📊 Benchmark](#-benchmark-results) • [💡 Citation](#-citation)
+[📄 Preprint](https://arxiv.org/abs/2508.15904) • [🔧 Quick Start](#-quick-start) • [📊 Benchmark](#-benchmark-results) • [💡 Citation](#-citation)
 
 </div>
 
@@ -20,7 +20,7 @@
 
 **💡 Our Solution**: We propose **PathPT**, a novel framework that fully harnesses the potential of pre-trained vision-language models via spatially-aware visual aggregation and task-specific prompt tuning. Unlike conventional MIL methods that rely only on visual features, PathPT enables cross-modal reasoning through prompts aligned with histopathological semantics.
 
-**📈 Impact**: Benchmarked on 8 rare cancer datasets (4 adult, 4 pediatric) spanning 56 subtypes and 2,910 WSIs, plus 3 common cancer datasets, PathPT consistently delivers superior performance with substantial gains in subtyping accuracy and cancerous region grounding ability.
+**📈 Impact**: Benchmarked on 8 rare cancer datasets (4 adult, 4 pediatric) and 3 common cancer datasets, spanning 56 subtypes and 3,958 WSIs, PathPT consistently delivers superior performance with substantial gains in subtyping accuracy and cancerous region grounding ability.
 
 ---
 
@@ -63,15 +63,16 @@ pip install -r requirements.txt
 ### 🔧 Setup
 
 1. **📂 Download Base Model**: Get a foundation model like [KEEP](https://huggingface.co/Astaxanthin/KEEP) and place it in `./base_models/`
-
 2. **💾 Download Features**: Get pre-extracted features like [UCS-KEEP-features](https://drive.google.com/file/d/1RNSIINkumfhiyqwL82hUXALCtdyPhbC3/view?usp=sharing) and place in `./features/keep/ucs/h5_files/`
-
 3. **🏃‍♂️ Run PathPT**:
    For quick start:
+
    ```bash
    quick_start_inference.ipynb
    ```
+
    For training:
+
    ```bash
    python train.py
    ```
@@ -85,7 +86,8 @@ pip install -r requirements.txt
 We have released **KidRare**, a specialized WSI dataset focused on rare pediatric tumors, to facilitate research in computational pathology.
 
 ### 📊 Dataset Overview
-- **Content**: 1,232 WSIs
+
+- **Content**: 2,280 WSIs
 - **Cancer Types**: Neuroblastoma, Nephroblastoma, Medulloblastoma, Hepatoblastoma
 - **License**: CC-BY-NC-ND-3.0 (Non-commercial, Academic Research Only)
 
@@ -93,10 +95,12 @@ We have released **KidRare**, a specialized WSI dataset focused on rare pediatri
 
 **1. Download Images**:
 The dataset is hosted on Hugging Face. You need to request access and agree to the terms of use.
+
 > 🔗 **Hugging Face Link**: [https://huggingface.co/datasets/Firehdx233/KidRare](https://huggingface.co/datasets/Firehdx233/KidRare)
 
 **2. Get Labels & Splits**:
 The label files and dataset division used in our paper can be found directly in this repository:
+
 - 📂 **File Path**: [`multifold/dataset_division.json`](https://github.com/MAGIC-AI4Med/PathPT/blob/main/multifold/dataset_division.json)
 
 ---
@@ -113,7 +117,7 @@ Download your foundation model into `./base_models/`, e.g.: [KEEP](https://huggi
 
 ### 📊 Dataset Division
 
-#### 1️⃣ Structure your data in `./dataset_division.json`:
+#### 1️⃣ Structure your data in `./multifold/dataset_division.json`:
 
 <details>
 <summary>📋 Click to see example format</summary>
@@ -140,6 +144,7 @@ Download your foundation model into `./base_models/`, e.g.: [KEEP](https://huggi
 </details>
 
 #### 2️⃣ Create CSV files in `./multifold/` with columns:
+
 `train`, `train_label`, `val`, `val_label`, `test`, `test_label`
 
 📝 See `./multifold/dataset_csv_10shot/TCGA/UCS/fold5.csv` for reference.
@@ -175,6 +180,7 @@ patch_feature = model.encode_image(transform(example_patch).unsqueeze(0))
 **🛠️ WSI Preprocessing**: We recommend [TRIDENT](https://github.com/mahmoodlab/TRIDENT) for WSI preprocessing and patching.
 
 **📁 File Format**: Save patch features as `.h5` files with:
+
 - **Dataset 1**: Patch features `[N, feature_dim]`
 - **Dataset 2**: Coordinates `[N, 2]`
 
@@ -184,15 +190,16 @@ Place files in `./features/YOUR_DATASET/YOUR_MODEL/h5_files/`
 
 For **new foundation models**, create these template files:
 
-| File | Purpose | 📝 Template |
-|------|---------|-------------|
-| `./models/PathPT_model_YOUR_MODEL.py` | Model architecture | [Template](./models/PathPT_model_YOUR_MODEL.py) |
-| `./wsi_selecters/wsi_selecter_YOUR_MODEL.py` | Patch selection | [Template](./wsi_selecters/wsi_selecter_YOUR_MODEL.py) |
-| `./subtyping/main_wsi_subtyping_YOUR_MODEL.py` | Training pipeline | [Template](./subtyping/main_wsi_subtyping_YOUR_MODEL.py) |
+| File                                             | Purpose            | 📝 Template                                           |
+| ------------------------------------------------ | ------------------ | ----------------------------------------------------- |
+| `./models/PathPT_model_YOUR_MODEL.py`          | Model architecture | [Template](./models/PathPT_model_YOUR_MODEL.py)          |
+| `./wsi_selecters/wsi_selecter_YOUR_MODEL.py`   | Patch selection    | [Template](./wsi_selecters/wsi_selecter_YOUR_MODEL.py)   |
+| `./subtyping/main_wsi_subtyping_YOUR_MODEL.py` | Training pipeline  | [Template](./subtyping/main_wsi_subtyping_YOUR_MODEL.py) |
 
 ### ⚙️ Configuration
 
 #### 1️⃣ Update `./params.py`:
+
 ```python
 subtype_params['your_dataset'] = {
     'dataset_name': 'your_dataset',
@@ -202,10 +209,11 @@ subtype_params['your_dataset'] = {
     # ... other parameters
 }
 ```
+
 > **💡 Note**: Init pattern of learning prompts can be customized here.
 
-
 #### 2️⃣ Update `./utils.py`:
+
 ```python
 your_dataset_names = {
   'subtype1': ['name1', 'name2'],
@@ -213,9 +221,11 @@ your_dataset_names = {
   'Normal': ['name1', 'name2', 'name3']
   }
 ```
+
 > **💡 Note**: Subtype names used in prompts can be customized here.
 
 #### 3️⃣ Modify `./train.py`:
+
 ```python
 # Change import to your model
 from subtyping.main_wsi_subtyping_YOUR_MODEL import main_subtyping as main_YOUR_MODEL
@@ -234,8 +244,9 @@ python train.py --model YOUR_MODEL --dataset YOUR_DATASET --shot 10
 ## 📊 Benchmark Results
 
 We evaluated **4 MIL methods** and **PathPT** across **11 datasets** covering:
+
 - 🩺 4 rare adult cancers
-- 👶 4 rare pediatric cancers  
+- 👶 4 rare pediatric cancers
 - 🔬 3 common cancers
 
 Using foundation models: **PLIP**, **MUSK**, **CONCH**, and **KEEP**.
@@ -244,32 +255,32 @@ Using foundation models: **PLIP**, **MUSK**, **CONCH**, and **KEEP**.
 <img src="resources/benchmark.png" alt="Benchmark Overview" width="800" />
 </div>
 
-### 🏆 ERBAINS Results (Balanced Accuracy)
+### 🏆 EBRAINS Results (Balanced Accuracy)
 
 | **Model** | **Zero-shot** | **ABMIL** | **CLAM** | **TransMIL** | **DGRMIL** | **PathPT (Ours)** |
-|:---------:|:-------------:|:---------:|:--------:|:------------:|:----------:|:-----------------:|
-| **PLIP** | 0.111 | 0.419 | 0.410 | 0.488 | 0.491 | 0.251 |
-| **MUSK** | 0.253 | 0.403 | 0.442 | 0.582 | 0.569 | 0.519 |
-| **CONCH** | 0.204 | 0.542 | 0.549 | 0.621 | 0.621 | 0.491 |
-| **KEEP** | 0.408 | 0.631 | 0.629 | 0.648 | 0.650 | **🏆 0.679** |
+| :-------------: | :-----------------: | :-------------: | :------------: | :----------------: | :--------------: | :---------------------: |
+| **PLIP** |        0.111        |      0.419      |     0.410     |       0.488       |      0.491      |          0.251          |
+| **MUSK** |        0.253        |      0.403      |     0.442     |       0.582       |      0.569      |          0.519          |
+| **CONCH** |        0.204        |      0.542      |     0.549     |       0.621       |      0.621      |          0.491          |
+| **KEEP** |        0.408        |      0.631      |     0.629     |       0.648       |      0.650      |   **🏆 0.679**   |
 
 ### 🧬 Hepatoblastoma Results (Balanced Accuracy)
 
 | **Model** | **Zero-shot** | **ABMIL** | **CLAM** | **TransMIL** | **DGRMIL** | **PathPT (Ours)** |
-|:---------:|:-------------:|:---------:|:--------:|:------------:|:----------:|:-----------------:|
-| **PLIP** | 0.278 | 0.370 | 0.363 | 0.384 | 0.435 | 0.349 |
-| **MUSK** | 0.395 | 0.262 | 0.378 | 0.447 | 0.436 | 0.438 |
-| **CONCH** | 0.276 | 0.376 | 0.374 | 0.518 | 0.491 | **🏆 0.534** |
-| **KEEP** | 0.313 | 0.383 | 0.378 | 0.492 | 0.444 | 0.524 |
+| :-------------: | :-----------------: | :-------------: | :------------: | :----------------: | :--------------: | :---------------------: |
+| **PLIP** |        0.278        |      0.370      |     0.363     |       0.384       |      0.435      |          0.349          |
+| **MUSK** |        0.395        |      0.262      |     0.378     |       0.447       |      0.436      |          0.438          |
+| **CONCH** |        0.276        |      0.376      |     0.374     |       0.518       |      0.491      |   **🏆 0.534**   |
+| **KEEP** |        0.313        |      0.383      |     0.378     |       0.492       |      0.444      |          0.524          |
 
 ### 🌊 UBC-OCEAN Results (Balanced Accuracy)
 
 | **Model** | **Zero-shot** | **ABMIL** | **CLAM** | **TransMIL** | **DGRMIL** | **PathPT (Ours)** |
-|:---------:|:-------------:|:---------:|:--------:|:------------:|:----------:|:-----------------:|
-| **PLIP** | 0.320 | 0.565 | 0.570 | 0.645 | 0.630 | 0.510 |
-| **MUSK** | 0.520 | 0.570 | 0.610 | 0.720 | 0.700 | 0.730 |
-| **CONCH** | 0.375 | 0.590 | 0.605 | 0.710 | 0.715 | 0.790 |
-| **KEEP** | 0.660 | 0.755 | 0.730 | 0.795 | 0.795 | **🏆 0.820** |
+| :-------------: | :-----------------: | :-------------: | :------------: | :----------------: | :--------------: | :---------------------: |
+| **PLIP** |        0.320        |      0.565      |     0.570     |       0.645       |      0.630      |          0.510          |
+| **MUSK** |        0.520        |      0.570      |     0.610     |       0.720       |      0.700      |          0.730          |
+| **CONCH** |        0.375        |      0.590      |     0.605     |       0.710       |      0.715      |          0.790          |
+| **KEEP** |        0.660        |      0.755      |     0.730     |       0.795       |      0.795      |   **🏆 0.820**   |
 
 > **📈 Key Takeaway**: PathPT achieves superior performance over traditional MIL methods! For detailed analysis, check our [paper](https://arxiv.org/abs/2508.15904).
 
@@ -296,6 +307,7 @@ If you find our work useful, please consider citing our paper:
       url={https://arxiv.org/abs/2508.15904}, 
 }
 ```
+
 <!-- 
 ---
 
@@ -308,7 +320,3 @@ If you find our work useful, please consider citing our paper:
 
 
 </div> -->
-
-
-
-
