@@ -297,14 +297,13 @@ This project builds upon amazing work from the community such as [CLAM](https://
 If you find our work useful, please consider citing our paper:
 
 ```bibtex
-@misc{he2025boostingpathologyfoundationmodels,
-      title={Boosting Pathology Foundation Models via Few-shot Prompt-tuning for Rare Cancer Subtyping}, 
-      author={Dexuan He and Xiao Zhou and Wenbin Guan and Liyuan Zhang and Xiaoman Zhang and Sinuo Xu and Ge Wang and Lifeng Wang and Xiaojun Yuan and Xin Sun and Yanfeng Wang and Kun Sun and Ya Zhang and Weidi Xie},
-      year={2025},
-      eprint={2508.15904},
-      archivePrefix={arXiv},
-      primaryClass={cs.CV},
-      url={https://arxiv.org/abs/2508.15904}, 
+@article{he2026boosting,
+  author = {Dexuan He and Xiao Zhou and Wenbin Guan and Liyuan Zhang and Xiaoman Zhang and Sinuo Xu and Ge Wang and Lifeng Wang and Xiaojun Yuan and Jing Ma and Xin Sun and Yanfeng Wang and Kun Sun and Ya Zhang and Weidi Xie},
+  title = {Boosting pathology foundation models via few-shot prompt-tuning for rare cancer subtyping},
+  journal = {Nature Communications},
+  year = {2026},
+  doi = {10.1038/s41467-026-71715-2},
+  url = {https://doi.org/10.1038/s41467-026-71715-2}
 }
 ```
 
